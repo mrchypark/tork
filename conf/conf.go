@@ -25,6 +25,9 @@ var defaultConfigPaths = []string{
 	"/etc/tork/config.toml",
 }
 
+// DefaultSQLitePath is the default path for the sqlite database file
+const DefaultSQLitePath = "tork.db"
+
 func LoadConfig() error {
 	var paths []string
 	userConfig := os.Getenv("TORK_CONFIG")

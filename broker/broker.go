@@ -11,6 +11,7 @@ type Provider func() (Broker, error)
 const (
 	BROKER_INMEMORY     = "inmemory"
 	BROKER_RABBITMQ     = "rabbitmq"
+	BROKER_SQS          = "sqs"
 	TOPIC_JOB           = "job.*"
 	TOPIC_JOB_COMPLETED = "job.completed"
 	TOPIC_JOB_FAILED    = "job.failed"

@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/runabol/tork"
 	"github.com/runabol/tork/broker"
+	"github.com/runabol/tork/broker/sqs"
 	"github.com/runabol/tork/conf"
 )
 
@@ -154,6 +155,20 @@ func (e *Engine) createBroker(btype string) (broker.Broker, error) {
 			return nil, errors.Wrapf(err, "unable to connect to RabbitMQ")
 		}
 		return rb, nil
+	case broker.BROKER_SQS:
+		cfg := sqs.Config{
+			Region:          conf.String("broker.sqs.region"),
+			AccessKeyID:     conf.String("broker.sqs.access_key_id"),
+			SecretAccessKey: conf.String("broker.sqs.secret_access_key"),
+			SessionToken:    conf.String("broker.sqs.session_token"),
+			Endpoint:        conf.String("broker.sqs.endpoint"),
+			Prefix:          conf.String("broker.sqs.prefix"),
+		}
+		s, err := sqs.NewSQSBroker(cfg)
+		if err != nil {
+			return nil, errors.Wrapf(err, "unable to create SQS broker")
+		}
+		return s, nil
 	default:
 		return nil, errors.Errorf("invalid broker type: %s", btype)
 	}

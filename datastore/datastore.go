@@ -21,6 +21,7 @@ var (
 
 const (
 	DATASTORE_POSTGRES = "postgres"
+	DATASTORE_SQLITE   = "sqlite"
 )
 
 type Datastore interface {

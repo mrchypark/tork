@@ -8,6 +8,7 @@ import (
 	"github.com/runabol/tork/conf"
 	"github.com/runabol/tork/datastore"
 	"github.com/runabol/tork/datastore/postgres"
+	"github.com/runabol/tork/datastore/sqlite"
 )
 
 type datastoreProxy struct {
@@ -277,6 +278,9 @@ func (e *Engine) createDatastore(dstype string) (datastore.Datastore, error) {
 			postgres.WithLogsRetentionDuration(conf.DurationDefault("datastore.retention.logs.duration", postgres.DefaultLogsRetentionDuration)),
 			postgres.WithJobsRetentionDuration(conf.DurationDefault("datastore.retention.jobs.duration", postgres.DefaultJobsRetentionDuration)),
 		)
+	case datastore.DATASTORE_SQLITE:
+		dbPath := conf.StringDefault("datastore.sqlite.path", "tork.db")
+		return sqlite.New(dbPath)
 	default:
 		return nil, errors.Errorf("unknown datastore type: %s", dstype)
 	}
